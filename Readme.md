@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Тимур Рафиков](https://up.htmlacademy.ru/javascript/21/user/1208781).
-* Наставник: [Вадим Новаш].
+* Наставник: [Вадим Новаш](https://htmlacademy.ru/profile/stakeout).
 
 ---
 
