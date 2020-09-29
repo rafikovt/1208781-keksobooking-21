@@ -66,8 +66,7 @@ map.classList.remove(`map--faded`);
 const createPin = (moks) => {
   const newPin = newPinTemplate.cloneNode(true);
   const newPinImg = newPin.querySelector(`img`);
-  newPin.style = `left: ${moks.location.x - newPinImg.width}px; 
-                    top: ${moks.location.y - (newPinImg.height) / 2}px`;
+  newPin.style.cssText = `left: ${moks.location.x - newPinImg.width}px; top: ${moks.location.y - (newPinImg.height) / 2}px`;
   newPinImg.src = `${moks.author.avatar}`;
   newPinImg.alt = `${moks.offer.title}`;
   return newPin;
