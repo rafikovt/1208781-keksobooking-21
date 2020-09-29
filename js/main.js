@@ -100,13 +100,11 @@ const createCard = (numberOfMock) => {
   const photoContainer = newCard.querySelector(`.popup__photos`);
   const imgPhoto = photoContainer.querySelector(`img`);
   const photos = mocks[numberOfMock].offer.photos;
-  for (let i = 0; i < photos.length - 1; i++) {
+  photoContainer.innerHTML = ``;
+  for (let i = 0; i < photos.length; i++) {
     const newImg = imgPhoto.cloneNode(true);
+    newImg.src = `${photos[i]}`;
     photoContainer.appendChild(newImg);
-  }
-  const imgPhotos = Array.from(photoContainer.querySelectorAll(`img`));
-  for (let i = 0; i < imgPhotos.length; i++) {
-    imgPhotos[i].src = `${photos[i]}`;
   }
   return newCard;
 };
