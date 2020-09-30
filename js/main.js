@@ -17,7 +17,6 @@ const LOCATION_X_MIN = 10;
 const LOCATION_X_MAX = 1000;
 const LOCATION_Y_MIN = 130;
 const LOCATION_Y_MAX = 630;
-const NUMBER_OF_CARD = 0;
 const map = document.querySelector(`.map`);
 const pinsContainer = map.querySelector(`.map__pins`);
 const newPinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
@@ -83,22 +82,22 @@ renderPins(mocks);
 // module3-task2
 
 
-const createCard = (numberOfMock) => {
+const createCard = (mock) => {
   const newCard = cardTemplate.cloneNode(true);
-  newCard.querySelector(`.popup__title`).textContent = `${mocks[numberOfMock].offer.title}`;
-  newCard.querySelector(`.popup__text--address`).textContent = `${mocks[numberOfMock].offer.address}`;
-  newCard.querySelector(`.popup__text--price`).textContent = `${mocks[numberOfMock].offer.price}₽/ночь`;
-  newCard.querySelector(`.popup__type`).textContent = `${TYPES_TRANSLATE[mocks[numberOfMock].offer.type]}`;
-  newCard.querySelector(`.popup__text--capacity`).textContent = `${mocks[numberOfMock].offer.rooms} комнаты для ${mocks[0].offer.guests} гостей`;
-  newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${mocks[numberOfMock].offer.checkin}, выезд до ${mocks[0].offer.checkout}`;
+  newCard.querySelector(`.popup__title`).textContent = `${mock.offer.title}`;
+  newCard.querySelector(`.popup__text--address`).textContent = `${mock.offer.address}`;
+  newCard.querySelector(`.popup__text--price`).textContent = `${mock.offer.price}₽/ночь`;
+  newCard.querySelector(`.popup__type`).textContent = `${TYPES_TRANSLATE[mock.offer.type]}`;
+  newCard.querySelector(`.popup__text--capacity`).textContent = `${mock.offer.rooms} комнаты для ${mocks[0].offer.guests} гостей`;
+  newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${mock.offer.checkin}, выезд до ${mocks[0].offer.checkout}`;
   const popupFeatures = Array.from(newCard.querySelectorAll(`.popup__feature`));
   const popupFeaturesContainer = newCard.querySelector(`.popup__features`);
-  const notAvailableFeatures = popupFeatures.filter((elem) => !mocks[numberOfMock].offer.features.some((str) => elem.className.includes(`--${str}`)));
+  const notAvailableFeatures = popupFeatures.filter((elem) => !mock.offer.features.some((str) => elem.className.includes(`--${str}`)));
   notAvailableFeatures.forEach((feature) => popupFeaturesContainer.removeChild(feature));
-  newCard.querySelector(`.popup__description`).textContent = `${mocks[numberOfMock].offer.description}`;
+  newCard.querySelector(`.popup__description`).textContent = `${mock.offer.description}`;
   const photoContainer = newCard.querySelector(`.popup__photos`);
   const imgPhoto = photoContainer.querySelector(`img`);
-  const photos = mocks[numberOfMock].offer.photos;
+  const photos = mock.offer.photos;
   photoContainer.innerHTML = ``;
   for (let i = 0; i < photos.length; i++) {
     const newImg = imgPhoto.cloneNode(true);
@@ -109,7 +108,7 @@ const createCard = (numberOfMock) => {
 };
 const renderCards = () => {
   const fragment = document.createDocumentFragment();
-  fragment.appendChild(createCard(NUMBER_OF_CARD));
+  fragment.appendChild(createCard(mocks[0]));
   cardsContainer.insertBefore(fragment, document.querySelector(`.map__filters-container`));
 };
 renderCards();
