@@ -83,7 +83,7 @@ const createPin = (moks) => {
   newPin.style.cssText = `left: ${moks.location.x + PIN_WIDTH / 2}px; top: ${moks.location.y + PIN_HEIGHT}px`;
   newPinImg.src = `${moks.author.avatar}`;
   newPinImg.alt = `${moks.offer.title}`;
-  newPin.hidden = true;
+  // newPin.hidden = true;
   return newPin;
 };
 const renderPins = (moks) => {
@@ -93,40 +93,39 @@ const renderPins = (moks) => {
   }
   pinsContainer.appendChild(fragment);
 };
-renderPins(mocks);
+
 
 // module3-task2
 
 
 const createCard = (mock) => {
   const newCard = cardTemplate.cloneNode(true);
-  newCard.querySelector(`img`).src = `${mock.author.avatar}`;
-  newCard.querySelector(`.popup__title`).textContent = `${mock.offer.title}`;
-  newCard.querySelector(`.popup__text--address`).textContent = `${mock.offer.address}`;
+  newCard.querySelector(`.popup__avatar`).src = mock.author.avatar;
+  newCard.querySelector(`.popup__title`).textContent = mock.offer.title;
+  newCard.querySelector(`.popup__text--address`).textContent = mock.offer.address;
   newCard.querySelector(`.popup__text--price`).textContent = `${mock.offer.price}₽/ночь`;
-  newCard.querySelector(`.popup__type`).textContent = `${TYPES[mock.offer.type]}`;
+  newCard.querySelector(`.popup__type`).textContent = TYPES[mock.offer.type];
   newCard.querySelector(`.popup__text--capacity`).textContent = `${mock.offer.rooms} комнаты для ${mocks[0].offer.guests} гостей`;
   newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${mock.offer.checkin}, выезд до ${mocks[0].offer.checkout}`;
   const popupFeatures = Array.from(newCard.querySelectorAll(`.popup__feature`));
   const popupFeaturesContainer = newCard.querySelector(`.popup__features`);
   const notAvailableFeatures = popupFeatures.filter((elem) => !mock.offer.features.some((str) => elem.className.includes(`--${str}`)));
   notAvailableFeatures.forEach((feature) => popupFeaturesContainer.removeChild(feature));
-  newCard.querySelector(`.popup__description`).textContent = `${mock.offer.description}`;
+  newCard.querySelector(`.popup__description`).textContent = mock.offer.description;
   const photoContainer = newCard.querySelector(`.popup__photos`);
   const imgPhoto = photoContainer.querySelector(`img`);
   const photos = mock.offer.photos;
   photoContainer.innerHTML = ``;
   for (let i = 0; i < photos.length; i++) {
     const newImg = imgPhoto.cloneNode(true);
-    newImg.src = `${photos[i]}`;
+    newImg.src = photos[i];
     photoContainer.appendChild(newImg);
   }
   return newCard;
 };
-const renderCards = (i) => {
-  const fragment = document.createDocumentFragment();
-  fragment.appendChild(createCard(mocks[i]));
-  cardsContainer.insertBefore(fragment, document.querySelector(`.map__filters-container`));
+const renderCard = (indexOfMock) => {
+  const card = createCard(mocks[indexOfMock]);
+  cardsContainer.insertBefore(card, cardsContainer.lastElementChild);
 };
 
 
@@ -167,12 +166,14 @@ const onPopupEscPress = (evt) => {
     closePopup();
   }
 };
-const openPopup = (i) => {
-  if (map.querySelector(`.map__card`)) {
-    map.querySelector(`.map__card`).remove();
+
+const openPopup = (indexOfMock) => {
+  const cardPopup = map.querySelector(`.popup`);
+  if (cardPopup) {
+    cardPopup.remove();
   }
-  renderCards(i - 1);
-  const cardPopup = map.querySelector(`.map__card`);
+  renderCard(indexOfMock);
+
   const closePopupButton = cardPopup.querySelector(`.popup__close`);
   document.addEventListener(`keydown`, onPopupEscPress);
   closePopupButton.addEventListener(`click`, () => {
@@ -180,7 +181,7 @@ const openPopup = (i) => {
   });
 };
 const closePopup = () => {
-  const cardPopup = map.querySelector(`.map__card`);
+  const cardPopup = map.querySelector(`.popup`);
   cardPopup.remove();
   document.removeEventListener(`keydown`, onPopupEscPress);
 };
@@ -214,14 +215,14 @@ const activateElements = () => {
   adForm.classList.remove(`ad-form--disabled`);
   adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.removeAttribute(`disabled`, `true`));
   mapFilters.classList.remove(`map__filters--disabled`);
+  renderPins(mocks);
   [...mapFilters.children].forEach((elem) => elem.removeAttribute(`disabled`, `true`));
-  const pins = pinsContainer.querySelectorAll(`.map__pin`);
-  for (let i = 1; i < pins.length; i++) {
-    pins[i].hidden = false;
-    pins[i].addEventListener(`click`, () => {
-      openPopup(i);
+  const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+  pins.forEach((elem, index) => {
+    elem.addEventListener(`click`, () => {
+      openPopup(index);
     });
-  }
+  });
   getAddresValue(GAP, GAP_WITH_ARROW);
   type.addEventListener(`change`, () => {
     checkPrice();
