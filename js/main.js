@@ -83,7 +83,6 @@ const createPin = (moks) => {
   newPin.style.cssText = `left: ${moks.location.x + PIN_WIDTH / 2}px; top: ${moks.location.y + PIN_HEIGHT}px`;
   newPinImg.src = `${moks.author.avatar}`;
   newPinImg.alt = `${moks.offer.title}`;
-  // newPin.hidden = true;
   return newPin;
 };
 const renderPins = (moks) => {
@@ -174,7 +173,7 @@ const openPopup = (indexOfMock) => {
   }
   renderCard(indexOfMock);
 
-  const closePopupButton = cardPopup.querySelector(`.popup__close`);
+  const closePopupButton = map.querySelector(`.popup__close`);
   document.addEventListener(`keydown`, onPopupEscPress);
   closePopupButton.addEventListener(`click`, () => {
     closePopup();
@@ -244,12 +243,12 @@ const activateElements = () => {
   });
 };
 mainPin.addEventListener(`keydown`, (evt) => {
-  if (evt.key === `Enter`) {
+  if (evt.key === `Enter` && map.classList.contains(`map--faded`)) {
     activateElements();
   }
 });
 mainPin.addEventListener(`mousedown`, (evt) => {
-  if (evt.button === 0) {
+  if (evt.button === 0 && map.classList.contains(`map--faded`)) {
     activateElements();
   }
 });
