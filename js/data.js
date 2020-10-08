@@ -14,8 +14,8 @@
     `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
     `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
     `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
-  const LOCATION_X_MIN = 10;
-  const LOCATION_X_MAX = 1000;
+  const LOCATION_X_MIN = 0;
+  const LOCATION_X_MAX = 1200;
   const LOCATION_Y_MIN = 130;
   const LOCATION_Y_MAX = 630;
   const COUNT_OF_MOCK = 8;

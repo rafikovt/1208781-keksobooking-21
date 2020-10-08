@@ -1,4 +1,5 @@
 'use strict';
+
 const mainPin = document.querySelector(`.map__pin--main`);
 const map = document.querySelector(`.map`);
 const deactivateElements = () => {
@@ -19,6 +20,8 @@ mainPin.addEventListener(`mousedown`, (evt) => {
   if (evt.button === 0 && map.classList.contains(`map--faded`)) {
     activateElements();
   }
+  window.pin.dragNDropMainPin(`mousedown`);
+  evt.preventDefault();
 });
 
 
