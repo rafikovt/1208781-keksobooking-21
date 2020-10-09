@@ -33,7 +33,6 @@
     guest.value = value > 3 ? 0 : value;
   };
   changeRoomNumberValue(room.value);
-  getAddresValue(GAP, GAP_WITH_ARROW);
   const titleInput = adForm.querySelector(`#title`);
   const checkTitleLength = () => {
     const valueLength = titleInput.value.length;
@@ -64,6 +63,7 @@
       adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.setAttribute(`disabled`, `true`));
     },
     activate: () => {
+      getAddresValue(GAP, GAP_WITH_ARROW);
       adForm.classList.remove(`ad-form--disabled`);
       adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.removeAttribute(`disabled`, `true`));
       type.addEventListener(`change`, () => {
@@ -84,6 +84,9 @@
       timeout.addEventListener(`change`, () => {
         timein.value = timeout.value;
       });
+    },
+    setNewAddress: () => {
+      getAddresValue(GAP, GAP_WITH_ARROW);
     }
   };
 })();
