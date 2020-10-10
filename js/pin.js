@@ -19,16 +19,21 @@
     newPinImg.alt = moks.offer.title;
     return newPin;
   };
-  const renderPins = (moks) => {
-    const fragment = document.createDocumentFragment();
-    for (let i = 0; i < COUNT_OF_MOCK; i++) {
-      fragment.appendChild(createPin(moks[i]));
-    }
-    pinsContainer.appendChild(fragment);
-  };
   window.pin = {
     render: () => {
-      renderPins(window.mocks);
+      window.load((moks) => {
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < COUNT_OF_MOCK; i++) {
+          if (moks[i].offer !== undefined) {
+            fragment.appendChild(createPin(moks[i]));
+          }
+        }
+        pinsContainer.appendChild(fragment);
+        const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+        pins.forEach((elem, index) => elem.addEventListener(`click`, () => {
+          window.map.openPopup(index);
+        }));
+      }, window.utils.errorHandler);
     },
     dragNDropMainPin: (evt) => {
       let startCoords = {
@@ -56,7 +61,7 @@
         };
         mainPin.style.top = setNewCoords((mainPin.offsetTop - shift.y), MAX_COORD_Y, MIN_COORD_Y);
         mainPin.style.left = setNewCoords((mainPin.offsetLeft - shift.x), MAX_COORD_X, MIN_COORD_X);
-        window.form.setNewAddress();
+        window.form.setActivatedPinAddress();
       };
       const onMouseUp = (upEvt) => {
         upEvt.preventDefault();
