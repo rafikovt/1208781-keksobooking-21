@@ -85,7 +85,7 @@
         timein.value = timeout.value;
       });
     },
-    setNewAddress: () => {
+    setActivatedPinAddress: () => {
       getAddresValue(GAP, GAP_WITH_ARROW);
     }
   };

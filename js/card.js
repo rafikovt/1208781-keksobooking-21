@@ -15,11 +15,11 @@
     newCard.querySelector(`.popup__text--address`).textContent = mock.offer.address;
     newCard.querySelector(`.popup__text--price`).textContent = `${mock.offer.price}₽/ночь`;
     newCard.querySelector(`.popup__type`).textContent = TYPES[mock.offer.type];
-    newCard.querySelector(`.popup__text--capacity`).textContent = `${mock.offer.rooms} комнаты для ${window.mocks[0].offer.guests} гостей`;
-    newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${mock.offer.checkin}, выезд до ${window.mocks[0].offer.checkout}`;
-    const popupFeatures = Array.from(newCard.querySelectorAll(`.popup__feature`));
+    newCard.querySelector(`.popup__text--capacity`).textContent = `${mock.offer.rooms} комнаты для ${mock.offer.guests} гостей`;
+    newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${mock.offer.checkin}, выезд до ${mock.offer.checkout}`;
+    const popupFeatures = newCard.querySelectorAll(`.popup__feature`);
     const popupFeaturesContainer = newCard.querySelector(`.popup__features`);
-    const notAvailableFeatures = popupFeatures.filter((elem) => !mock.offer.features.some((str) => elem.className.includes(`--${str}`)));
+    const notAvailableFeatures = [...popupFeatures].filter((elem) => !mock.offer.features.some((str) => elem.className.includes(`--${str}`)));
     notAvailableFeatures.forEach((feature) => popupFeaturesContainer.removeChild(feature));
     newCard.querySelector(`.popup__description`).textContent = mock.offer.description;
     const photoContainer = newCard.querySelector(`.popup__photos`);
@@ -34,7 +34,13 @@
     return newCard;
   };
   window.renderCard = (indexOfMock) => {
-    const card = createCard(window.mocks[indexOfMock]);
-    cardsContainer.insertBefore(card, cardsContainer.lastElementChild);
+    window.load((moks) => {
+      const card = createCard(moks[indexOfMock]);
+      cardsContainer.insertBefore(card, cardsContainer.lastElementChild);
+      const closePopupButton = card.querySelector(`.popup__close`);
+      closePopupButton.addEventListener(`click`, () => {
+        window.map.closePopup();
+      });
+    }, window.utils.errorHandler);
   };
 })();
