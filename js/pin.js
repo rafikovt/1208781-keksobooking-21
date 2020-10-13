@@ -2,12 +2,16 @@
 (() => {
   const SHIFT_WIDTH = 25;
   const SHIFT_HEIGHT = 70;
-  const COUNT_OF_MOCK = 8;
+  const COUNT_OF_PINS = 5;
   const MAX_COORD_X = 1169;
   const MIN_COORD_X = -31;
   const MAX_COORD_Y = 546;
   const MIN_COORD_Y = 46;
   const mainPin = document.querySelector(`.map__pin--main`);
+  const START_COORD_MAIN_PIN = {
+    x: mainPin.style.top,
+    y: mainPin.style.left
+  };
   const map = document.querySelector(`.map`);
   const pinsContainer = map.querySelector(`.map__pins`);
   const newPinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
@@ -23,8 +27,8 @@
     render: () => {
       window.load((moks) => {
         const fragment = document.createDocumentFragment();
-        for (let i = 0; i < COUNT_OF_MOCK; i++) {
-          if (moks[i].offer !== undefined) {
+        for (let i = 0; i < COUNT_OF_PINS; i++) {
+          if (moks[i].offer) {
             fragment.appendChild(createPin(moks[i]));
           }
         }
@@ -34,6 +38,10 @@
           window.map.openPopup(index);
         }));
       }, window.utils.errorHandler);
+    },
+    remove: () => {
+      const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+      pins.forEach((elem) => elem.remove());
     },
     dragNDropMainPin: (evt) => {
       let startCoords = {
@@ -70,6 +78,10 @@
       };
       document.addEventListener(`mousemove`, onMouseMove);
       document.addEventListener(`mouseup`, onMouseUp);
+    },
+    setMainPinStartCoords: () => {
+      mainPin.style.top = START_COORD_MAIN_PIN.x;
+      mainPin.style.left = START_COORD_MAIN_PIN.y;
     }
   };
 })();

@@ -3,13 +3,13 @@
 const mainPin = document.querySelector(`.map__pin--main`);
 const map = document.querySelector(`.map`);
 const deactivateElements = () => {
-  window.form.deactivate();
   window.map.deactivate();
+  window.form.deactivate();
 };
 deactivateElements();
 const activateElements = () => {
-  window.form.activate();
   window.map.activate();
+  window.form.activate();
 };
 mainPin.addEventListener(`keydown`, (evt) => {
   if (evt.key === `Enter` && map.classList.contains(`map--faded`)) {

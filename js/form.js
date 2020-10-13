@@ -60,7 +60,10 @@
   const timeout = adForm.querySelector(`#timeout`);
   window.form = {
     deactivate: () => {
+      adForm.classList.add(`ad-form--disabled`);
       adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.setAttribute(`disabled`, `true`));
+      adForm.reset();
+      getAddresValue(GAP, GAP);
     },
     activate: () => {
       getAddresValue(GAP, GAP_WITH_ARROW);
@@ -87,6 +90,6 @@
     },
     setActivatedPinAddress: () => {
       getAddresValue(GAP, GAP_WITH_ARROW);
-    }
+    },
   };
 })();
