@@ -1,18 +1,18 @@
 'use strict';
 (() => {
   const TIMEOUT_IN_MS = 10000;
-  const URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  const URL = `https://21.javascript.pages.academy/keksobooking`;
   const statusCode = {
     OK: 200
   };
-  window.load = (onSuccess, onError) => {
+  window.upload = (data, onSuccess, onError) => {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
     xhr.addEventListener(`load`, () => {
       if (xhr.status === statusCode.OK) {
         onSuccess(xhr.response);
       } else {
-        onError(`Статус ответа: ${xhr.status} ${xhr.statusText}`);
+        onError();
       }
     });
     xhr.addEventListener(`error`, () => {
@@ -22,7 +22,7 @@
       onError(`Запрос не успел выполниться за ${xhr.timeout} мс`);
     });
     xhr.timeout = TIMEOUT_IN_MS;
-    xhr.open(`GET`, URL);
-    xhr.send();
+    xhr.open(`POST`, URL);
+    xhr.send(data);
   };
 })();

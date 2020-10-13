@@ -37,7 +37,7 @@
         pins.forEach((elem, index) => elem.addEventListener(`click`, () => {
           window.map.openPopup(index);
         }));
-      }, window.utils.errorHandler);
+      }, window.utils.openErrorOnLoad);
     },
     remove: () => {
       const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);

@@ -41,6 +41,6 @@
       closePopupButton.addEventListener(`click`, () => {
         window.map.closePopup();
       });
-    }, window.utils.errorHandler);
+    }, window.utils.openErrorOnLoad);
   };
 })();

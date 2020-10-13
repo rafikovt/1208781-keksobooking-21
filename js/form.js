@@ -15,6 +15,7 @@
   const mainPin = document.querySelector(`.map__pin--main`);
   const adForm = document.querySelector(`.ad-form`);
   const address = adForm.querySelector(`#address`);
+  const resetButton = adForm.querySelector(`.ad-form__reset`);
   address.setAttribute(`readonly`, true);
   const getAddresValue = (gapX, gapY) => {
     address.value = (parseInt(mainPin.style.left, 10) + gapX) + `, ` + (parseInt(mainPin.style.top, 10) + gapY);
@@ -32,7 +33,6 @@
     });
     guest.value = value > 3 ? 0 : value;
   };
-  changeRoomNumberValue(room.value);
   const titleInput = adForm.querySelector(`#title`);
   const checkTitleLength = () => {
     const valueLength = titleInput.value.length;
@@ -63,12 +63,15 @@
       adForm.classList.add(`ad-form--disabled`);
       adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.setAttribute(`disabled`, `true`));
       adForm.reset();
+      changeRoomNumberValue(room.value);
       getAddresValue(GAP, GAP);
     },
     activate: () => {
       getAddresValue(GAP, GAP_WITH_ARROW);
       adForm.classList.remove(`ad-form--disabled`);
       adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.removeAttribute(`disabled`, `true`));
+      changeRoomNumberValue(room.value);
+      // удалять или нет обработчики при деактивации страницы
       type.addEventListener(`change`, () => {
         checkPrice();
       });
@@ -86,6 +89,16 @@
       });
       timeout.addEventListener(`change`, () => {
         timein.value = timeout.value;
+      });
+      adForm.addEventListener(`submit`, (evt) => {
+        evt.preventDefault();
+        window.upload(new FormData(adForm), window.utils.openSuccessMessage, window.utils.openErrorOnUpload);
+      });
+      // доделать кнопку
+      resetButton.addEventListener(`click`, () => {
+        window.pin.setMainPinStartCoords();
+        getAddresValue(GAP, GAP_WITH_ARROW);
+        window.pin.remove();
       });
     },
     setActivatedPinAddress: () => {
