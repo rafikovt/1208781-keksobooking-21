@@ -7,7 +7,7 @@
   const MIN_COORD_X = -31;
   const MAX_COORD_Y = 546;
   const MIN_COORD_Y = 46;
-  const mainPin = document.querySelector(`.map__pin--main`);
+  const mainPin = document.querySelector(`.map__pin--main`); // Нормально ли то что обьявлена переменная перд константой?
   const START_COORD_MAIN_PIN = {
     x: mainPin.style.top,
     y: mainPin.style.left

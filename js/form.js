@@ -10,6 +10,7 @@
   const MAX_TITLE_LENGTH = 100;
   const GAP = 31;
   const GAP_WITH_ARROW = 84;
+
   const room = document.querySelector(`#room_number`);
   const guest = document.querySelector(`#capacity`);
   const mainPin = document.querySelector(`.map__pin--main`);
@@ -17,24 +18,31 @@
   const address = adForm.querySelector(`#address`);
   const resetButton = adForm.querySelector(`.ad-form__reset`);
   const filter = document.querySelector(`.map__filters`);
-  address.setAttribute(`readonly`, true);
-  const getAddresValue = (gapX, gapY) => {
-    address.value = (parseInt(mainPin.style.left, 10) + gapX) + `, ` + (parseInt(mainPin.style.top, 10) + gapY);
-  };
-  getAddresValue(GAP, GAP);
+  const titleInput = adForm.querySelector(`#title`);
+  const type = adForm.querySelector(`#type`);
+  const price = adForm.querySelector(`#price`);
+  const timein = adForm.querySelector(`#timein`);
+  const timeout = adForm.querySelector(`#timeout`);
   const roomForGuestsMap = {
     1: [`1`],
     2: [`1`, `2`],
     3: [`1`, `2`, `3`],
     100: [`0`],
   };
+  const getAddresValue = (gapX, gapY) => {
+    address.value = (parseInt(mainPin.style.left, 10) + gapX) + `, ` + (parseInt(mainPin.style.top, 10) + gapY);
+  };
+  const setActivatedPinAddress = () => {
+    getAddresValue(GAP, GAP_WITH_ARROW);
+  };
+  address.setAttribute(`readonly`, true);
+  getAddresValue(GAP, GAP);
   const changeRoomNumberValue = (value) => {
     [...guest.options].forEach((option) => {
       option.disabled = !roomForGuestsMap[value].includes(option.value);
     });
     guest.value = value > 3 ? 0 : value;
   };
-  const titleInput = adForm.querySelector(`#title`);
   const checkTitleLength = () => {
     const valueLength = titleInput.value.length;
     if (valueLength < MIN_TITLE_LENGTH) {
@@ -46,19 +54,15 @@
     }
     titleInput.reportValidity();
   };
-  const type = adForm.querySelector(`#type`);
-  const price = adForm.querySelector(`#price`);
   const checkPrice = () => {
     price.placeholder = MIN_PRICE[type.value];
-    if (price.value < price.placeholder) {
+    if (parseInt(price.value, 10) < parseInt(price.placeholder, 10)) {
       price.setCustomValidity(`Минимальная цена для данного типа жилья: ` + price.placeholder);
     } else {
       price.setCustomValidity(``);
     }
     price.reportValidity();
   };
-  const timein = adForm.querySelector(`#timein`);
-  const timeout = adForm.querySelector(`#timeout`);
   const deactivateForm = () => {
     adForm.classList.add(`ad-form--disabled`);
     adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.setAttribute(`disabled`, `true`));
@@ -71,16 +75,10 @@
     adForm.classList.remove(`ad-form--disabled`);
     adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.removeAttribute(`disabled`, `true`));
     changeRoomNumberValue(room.value);
-    // удалять или нет обработчики при деактивации страницы
-    type.addEventListener(`change`, () => {
-      checkPrice();
-    });
-    price.addEventListener(`input`, () => {
-      checkPrice();
-    });
-    titleInput.addEventListener(`input`, () => {
-      checkTitleLength();
-    });
+    // удалять или нет обработчики при деактивации страницы ?
+    type.addEventListener(`change`, checkPrice);
+    price.addEventListener(`input`, checkPrice);
+    titleInput.addEventListener(`input`, checkTitleLength);
     room.addEventListener(`change`, (evt) => {
       changeRoomNumberValue(evt.target.value);
     });
@@ -98,9 +96,6 @@
       window.main.deactivatePage();
       filter.reset();
     });
-  };
-  const setActivatedPinAddress = () => {
-    getAddresValue(GAP, GAP_WITH_ARROW);
   };
   window.form = {
     deactivateForm,
