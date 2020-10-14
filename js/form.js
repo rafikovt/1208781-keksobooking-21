@@ -16,6 +16,7 @@
   const adForm = document.querySelector(`.ad-form`);
   const address = adForm.querySelector(`#address`);
   const resetButton = adForm.querySelector(`.ad-form__reset`);
+  const filter = document.querySelector(`.map__filters`);
   address.setAttribute(`readonly`, true);
   const getAddresValue = (gapX, gapY) => {
     address.value = (parseInt(mainPin.style.left, 10) + gapX) + `, ` + (parseInt(mainPin.style.top, 10) + gapY);
@@ -93,11 +94,9 @@
       evt.preventDefault();
       window.upload(new FormData(adForm), window.utils.openSuccessMessage, window.utils.openErrorOnUpload);
     });
-    // доделать кнопку
     resetButton.addEventListener(`click`, () => {
-      window.pin.setMainPinStartCoords();
-      getAddresValue(GAP, GAP_WITH_ARROW);
-      window.pin.removePins();
+      window.main.deactivatePage();
+      filter.reset();
     });
   };
   const setActivatedPinAddress = () => {

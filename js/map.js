@@ -29,7 +29,7 @@
     window.pin.setMainPinStartCoords();
     const cardPopup = document.querySelector(`.popup`);
     if (cardPopup) {
-      cardPopup.remove();
+      closePopup();
     }
   };
   const activateMap = () => {
