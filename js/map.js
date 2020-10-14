@@ -5,39 +5,43 @@
   const onPopupEscPress = (evt) => {
     if (evt.key === `Escape`) {
       evt.preventDefault();
-      window.map.closePopup();
+      closePopup();
     }
   };
-  window.map = {
-    openPopup: (indexOfMock) => {
-      const cardPopup = document.querySelector(`.popup`);
-      if (cardPopup) {
-        cardPopup.remove();
-      }
-      window.renderCard(indexOfMock);
-      document.addEventListener(`keydown`, onPopupEscPress);
-    },
-    closePopup: () => {
-      const cardPopup = map.querySelector(`.popup`);
+  const openPopup = (indexOfMock) => {
+    const cardPopup = document.querySelector(`.popup`);
+    if (cardPopup) {
       cardPopup.remove();
-      document.removeEventListener(`keydown`, onPopupEscPress);
-    },
-    deactivate: () => {
-      map.classList.add(`map--faded`);
-      mapFilters.classList.add(`map__filters--disabled`);
-      [...mapFilters.children].forEach((elem) => elem.setAttribute(`disabled`, `true`));
-      window.pin.remove();
-      window.pin.setMainPinStartCoords();
-      const cardPopup = document.querySelector(`.popup`);
-      if (cardPopup) {
-        cardPopup.remove();
-      }
-    },
-    activate: () => {
-      map.classList.remove(`map--faded`);
-      mapFilters.classList.remove(`map__filters--disabled`);
-      [...mapFilters.children].forEach((elem) => elem.removeAttribute(`disabled`, `true`));
-      window.pin.render();
     }
+    window.card.renderCard(indexOfMock);
+    document.addEventListener(`keydown`, onPopupEscPress);
+  };
+  const closePopup = () => {
+    const cardPopup = map.querySelector(`.popup`);
+    cardPopup.remove();
+    document.removeEventListener(`keydown`, onPopupEscPress);
+  };
+  const deactivateMap = () => {
+    map.classList.add(`map--faded`);
+    mapFilters.classList.add(`map__filters--disabled`);
+    [...mapFilters.children].forEach((elem) => elem.setAttribute(`disabled`, `true`));
+    window.pin.removePins();
+    window.pin.setMainPinStartCoords();
+    const cardPopup = document.querySelector(`.popup`);
+    if (cardPopup) {
+      cardPopup.remove();
+    }
+  };
+  const activateMap = () => {
+    map.classList.remove(`map--faded`);
+    mapFilters.classList.remove(`map__filters--disabled`);
+    [...mapFilters.children].forEach((elem) => elem.removeAttribute(`disabled`, `true`));
+    window.pin.renderPins();
+  };
+  window.map = {
+    openPopup,
+    closePopup,
+    deactivateMap,
+    activateMap
   };
 })();

@@ -33,7 +33,7 @@
     }
     return newCard;
   };
-  window.renderCard = (indexOfMock) => {
+  const renderCard = (indexOfMock) => {
     window.load((moks) => {
       const card = createCard(moks[indexOfMock]);
       cardsContainer.insertBefore(card, cardsContainer.lastElementChild);
@@ -42,5 +42,8 @@
         window.map.closePopup();
       });
     }, window.utils.openErrorOnLoad);
+  };
+  window.card = {
+    renderCard
   };
 })();

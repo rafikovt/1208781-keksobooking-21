@@ -23,65 +23,69 @@
     newPinImg.alt = moks.offer.title;
     return newPin;
   };
-  window.pin = {
-    render: () => {
-      window.load((moks) => {
-        const fragment = document.createDocumentFragment();
-        for (let i = 0; i < COUNT_OF_PINS; i++) {
-          if (moks[i].offer) {
-            fragment.appendChild(createPin(moks[i]));
-          }
+  const renderPins = () => {
+    window.load((moks) => {
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < COUNT_OF_PINS; i++) {
+        if (moks[i].offer) {
+          fragment.appendChild(createPin(moks[i]));
         }
-        pinsContainer.appendChild(fragment);
-        const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-        pins.forEach((elem, index) => elem.addEventListener(`click`, () => {
-          window.map.openPopup(index);
-        }));
-      }, window.utils.openErrorOnLoad);
-    },
-    remove: () => {
+      }
+      pinsContainer.appendChild(fragment);
       const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-      pins.forEach((elem) => elem.remove());
-    },
-    dragNDropMainPin: (evt) => {
-      let startCoords = {
-        x: evt.clientX,
-        y: evt.clientY
+      pins.forEach((elem, index) => elem.addEventListener(`click`, () => {
+        window.map.openPopup(index);
+      }));
+    }, window.utils.openErrorOnLoad);
+  };
+  const removePins = () => {
+    const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    pins.forEach((elem) => elem.remove());
+  };
+  const dragNDropMainPin = (evt) => {
+    let startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+    const onMouseMove = (moveEvt) => {
+      moveEvt.preventDefault();
+      const shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
       };
-      const onMouseMove = (moveEvt) => {
-        moveEvt.preventDefault();
-        const shift = {
-          x: startCoords.x - moveEvt.clientX,
-          y: startCoords.y - moveEvt.clientY
-        };
-        startCoords = {
-          x: moveEvt.clientX,
-          y: moveEvt.clientY
-        };
-        const setNewCoords = (coord, maxCoord, minCoord) => {
-          if (coord > maxCoord) {
-            return maxCoord + `px`;
-          } if (coord < minCoord) {
-            return minCoord + `px`;
-          } else {
-            return (coord + `px`);
-          }
-        };
-        mainPin.style.top = setNewCoords((mainPin.offsetTop - shift.y), MAX_COORD_Y, MIN_COORD_Y);
-        mainPin.style.left = setNewCoords((mainPin.offsetLeft - shift.x), MAX_COORD_X, MIN_COORD_X);
-        window.form.setActivatedPinAddress();
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
       };
-      const onMouseUp = (upEvt) => {
-        upEvt.preventDefault();
-        document.removeEventListener(`mousemove`, onMouseMove);
-        document.removeEventListener(`mouseup`, onMouseUp);
+      const setNewCoords = (coord, maxCoord, minCoord) => {
+        if (coord > maxCoord) {
+          return maxCoord + `px`;
+        } if (coord < minCoord) {
+          return minCoord + `px`;
+        } else {
+          return (coord + `px`);
+        }
       };
-      document.addEventListener(`mousemove`, onMouseMove);
-      document.addEventListener(`mouseup`, onMouseUp);
-    },
-    setMainPinStartCoords: () => {
-      mainPin.style.top = START_COORD_MAIN_PIN.x;
-      mainPin.style.left = START_COORD_MAIN_PIN.y;
-    }
+      mainPin.style.top = setNewCoords((mainPin.offsetTop - shift.y), MAX_COORD_Y, MIN_COORD_Y);
+      mainPin.style.left = setNewCoords((mainPin.offsetLeft - shift.x), MAX_COORD_X, MIN_COORD_X);
+      window.form.setActivatedPinAddress();
+    };
+    const onMouseUp = (upEvt) => {
+      upEvt.preventDefault();
+      document.removeEventListener(`mousemove`, onMouseMove);
+      document.removeEventListener(`mouseup`, onMouseUp);
+    };
+    document.addEventListener(`mousemove`, onMouseMove);
+    document.addEventListener(`mouseup`, onMouseUp);
+  };
+  const setMainPinStartCoords = () => {
+    mainPin.style.top = START_COORD_MAIN_PIN.x;
+    mainPin.style.left = START_COORD_MAIN_PIN.y;
+  };
+  window.pin = {
+    renderPins,
+    removePins,
+    dragNDropMainPin,
+    setMainPinStartCoords
   };
 })();

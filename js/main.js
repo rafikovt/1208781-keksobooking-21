@@ -2,27 +2,30 @@
 (() => {
   const mainPin = document.querySelector(`.map__pin--main`);
   const map = document.querySelector(`.map`);
-  window.main = {
-    deactivateElements: () => {
-      window.map.deactivate();
-      window.form.deactivate();
-    },
-    activateElements: () => {
-      window.map.activate();
-      window.form.activate();
-    }};
+  const deactivatePage = () => {
+    window.map.deactivateMap();
+    window.form.deactivateForm();
+  };
+  deactivatePage();
+  const activatePage = () => {
+    window.map.activateMap();
+    window.form.activateForm();
+  };
   mainPin.addEventListener(`keydown`, (evt) => {
     if (evt.key === `Enter` && map.classList.contains(`map--faded`)) {
-      window.main.activateElements();
+      activatePage();
     }
   });
   mainPin.addEventListener(`mousedown`, (evt) => {
     if (evt.button === 0 && map.classList.contains(`map--faded`)) {
-      window.main.activateElements();
+      activatePage();
     }
     window.pin.dragNDropMainPin(`mousedown`);
     evt.preventDefault();
   });
-  window.main.deactivateElements();
+  window.main = {
+    deactivatePage,
+    activatePage
+  };
 })();
 

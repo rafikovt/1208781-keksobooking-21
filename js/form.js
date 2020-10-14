@@ -58,51 +58,54 @@
   };
   const timein = adForm.querySelector(`#timein`);
   const timeout = adForm.querySelector(`#timeout`);
+  const deactivateForm = () => {
+    adForm.classList.add(`ad-form--disabled`);
+    adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.setAttribute(`disabled`, `true`));
+    adForm.reset();
+    changeRoomNumberValue(room.value);
+    getAddresValue(GAP, GAP);
+  };
+  const activateForm = () => {
+    getAddresValue(GAP, GAP_WITH_ARROW);
+    adForm.classList.remove(`ad-form--disabled`);
+    adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.removeAttribute(`disabled`, `true`));
+    changeRoomNumberValue(room.value);
+    // удалять или нет обработчики при деактивации страницы
+    type.addEventListener(`change`, () => {
+      checkPrice();
+    });
+    price.addEventListener(`input`, () => {
+      checkPrice();
+    });
+    titleInput.addEventListener(`input`, () => {
+      checkTitleLength();
+    });
+    room.addEventListener(`change`, (evt) => {
+      changeRoomNumberValue(evt.target.value);
+    });
+    timein.addEventListener(`change`, () => {
+      timeout.value = timein.value;
+    });
+    timeout.addEventListener(`change`, () => {
+      timein.value = timeout.value;
+    });
+    adForm.addEventListener(`submit`, (evt) => {
+      evt.preventDefault();
+      window.upload(new FormData(adForm), window.utils.openSuccessMessage, window.utils.openErrorOnUpload);
+    });
+    // доделать кнопку
+    resetButton.addEventListener(`click`, () => {
+      window.pin.setMainPinStartCoords();
+      getAddresValue(GAP, GAP_WITH_ARROW);
+      window.pin.removePins();
+    });
+  };
+  const setActivatedPinAddress = () => {
+    getAddresValue(GAP, GAP_WITH_ARROW);
+  };
   window.form = {
-    deactivate: () => {
-      adForm.classList.add(`ad-form--disabled`);
-      adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.setAttribute(`disabled`, `true`));
-      adForm.reset();
-      changeRoomNumberValue(room.value);
-      getAddresValue(GAP, GAP);
-    },
-    activate: () => {
-      getAddresValue(GAP, GAP_WITH_ARROW);
-      adForm.classList.remove(`ad-form--disabled`);
-      adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.removeAttribute(`disabled`, `true`));
-      changeRoomNumberValue(room.value);
-      // удалять или нет обработчики при деактивации страницы
-      type.addEventListener(`change`, () => {
-        checkPrice();
-      });
-      price.addEventListener(`input`, () => {
-        checkPrice();
-      });
-      titleInput.addEventListener(`input`, () => {
-        checkTitleLength();
-      });
-      room.addEventListener(`change`, (evt) => {
-        changeRoomNumberValue(evt.target.value);
-      });
-      timein.addEventListener(`change`, () => {
-        timeout.value = timein.value;
-      });
-      timeout.addEventListener(`change`, () => {
-        timein.value = timeout.value;
-      });
-      adForm.addEventListener(`submit`, (evt) => {
-        evt.preventDefault();
-        window.upload(new FormData(adForm), window.utils.openSuccessMessage, window.utils.openErrorOnUpload);
-      });
-      // доделать кнопку
-      resetButton.addEventListener(`click`, () => {
-        window.pin.setMainPinStartCoords();
-        getAddresValue(GAP, GAP_WITH_ARROW);
-        window.pin.remove();
-      });
-    },
-    setActivatedPinAddress: () => {
-      getAddresValue(GAP, GAP_WITH_ARROW);
-    },
+    deactivateForm,
+    activateForm,
+    setActivatedPinAddress
   };
 })();
