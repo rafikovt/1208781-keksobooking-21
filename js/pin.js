@@ -23,20 +23,19 @@
     newPinImg.alt = moks.offer.title;
     return newPin;
   };
-  const renderPins = () => {
-    window.load((moks) => {
-      const fragment = document.createDocumentFragment();
-      for (let i = 0; i < COUNT_OF_PINS; i++) {
-        if (moks[i].offer) {
-          fragment.appendChild(createPin(moks[i]));
-        }
+
+  const renderPins = (moks) => {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < COUNT_OF_PINS; i++) {
+      if (moks[i].offer) {
+        fragment.appendChild(createPin(moks[i]));
       }
-      pinsContainer.appendChild(fragment);
-      const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-      pins.forEach((elem, index) => elem.addEventListener(`click`, () => {
-        window.map.openPopup(index);
-      }));
-    }, window.utils.openErrorOnLoad);
+    }
+    pinsContainer.appendChild(fragment);
+    const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    pins.forEach((elem, index) => elem.addEventListener(`click`, () => {
+      window.map.openPopup(index);
+    }));
   };
   const removePins = () => {
     const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);

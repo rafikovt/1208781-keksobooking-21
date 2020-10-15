@@ -8,12 +8,12 @@
       closePopup();
     }
   };
-  const openPopup = (indexOfMock) => {
+  const openPopup = (indexOfCard) => {
     const cardPopup = document.querySelector(`.popup`);
     if (cardPopup) {
       cardPopup.remove();
     }
-    window.card.renderCard(indexOfMock);
+    window.card.renderCard(indexOfCard);
     document.addEventListener(`keydown`, onPopupEscPress);
   };
   const closePopup = () => {
@@ -36,7 +36,7 @@
     map.classList.remove(`map--faded`);
     mapFilters.classList.remove(`map__filters--disabled`);
     [...mapFilters.children].forEach((elem) => elem.removeAttribute(`disabled`, `true`));
-    window.pin.renderPins();
+    window.pin.renderPins(window.data);
   };
   window.map = {
     openPopup,

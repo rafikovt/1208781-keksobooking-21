@@ -33,15 +33,13 @@
     }
     return newCard;
   };
-  const renderCard = (indexOfMock) => {
-    window.load((moks) => {
-      const card = createCard(moks[indexOfMock]);
-      cardsContainer.insertBefore(card, cardsContainer.lastElementChild);
-      const closePopupButton = card.querySelector(`.popup__close`);
-      closePopupButton.addEventListener(`click`, () => {
-        window.map.closePopup();
-      });
-    }, window.utils.openErrorOnLoad);
+  const renderCard = (indexOfCard) => {
+    const card = createCard(window.data[indexOfCard]);
+    cardsContainer.insertBefore(card, cardsContainer.lastElementChild);
+    const closePopupButton = card.querySelector(`.popup__close`);
+    closePopupButton.addEventListener(`click`, () => {
+      window.map.closePopup();
+    });
   };
   window.card = {
     renderCard

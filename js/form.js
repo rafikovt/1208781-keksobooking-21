@@ -90,7 +90,7 @@
     });
     adForm.addEventListener(`submit`, (evt) => {
       evt.preventDefault();
-      window.upload(new FormData(adForm), window.utils.openSuccessMessage, window.utils.openErrorOnUpload);
+      window.upload.send(new FormData(adForm), window.utils.openSuccessMessage, window.utils.openErrorOnUpload);
     });
     resetButton.addEventListener(`click`, () => {
       window.main.deactivatePage();
