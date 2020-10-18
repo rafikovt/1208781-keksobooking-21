@@ -20,7 +20,7 @@
     if (evt.button === 0 && map.classList.contains(`map--faded`)) {
       activatePage();
     }
-    window.pin.dragNDropMainPin(`mousedown`);
+    window.movepin.dragNDropMainPin(`mousedown`);
     evt.preventDefault();
   });
   window.main = {
