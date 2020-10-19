@@ -46,6 +46,7 @@
   window.utils = {
     openErrorOnLoad,
     openSuccessMessage,
-    openErrorOnUpload
+    openErrorOnUpload,
+    onPopupEscPress
   };
 })();

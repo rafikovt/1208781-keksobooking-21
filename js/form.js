@@ -11,24 +11,30 @@
   const GAP = 31;
   const GAP_WITH_ARROW = 84;
 
-  const room = document.querySelector(`#room_number`);
-  const guest = document.querySelector(`#capacity`);
-  const mainPin = document.querySelector(`.map__pin--main`);
-  const adForm = document.querySelector(`.ad-form`);
-  const address = adForm.querySelector(`#address`);
-  const resetButton = adForm.querySelector(`.ad-form__reset`);
-  const filter = document.querySelector(`.map__filters`);
-  const titleInput = adForm.querySelector(`#title`);
-  const type = adForm.querySelector(`#type`);
-  const price = adForm.querySelector(`#price`);
-  const timein = adForm.querySelector(`#timein`);
-  const timeout = adForm.querySelector(`#timeout`);
   const roomForGuestsMap = {
     1: [`1`],
     2: [`1`, `2`],
     3: [`1`, `2`, `3`],
     100: [`0`],
   };
+  const mainPin = window.movepin.mainPin;
+  const adForm = document.querySelector(`.ad-form`);
+  const address = adForm.querySelector(`#address`);
+  const guest = adForm.querySelector(`#capacity`);
+  const room = adForm.querySelector(`#room_number`);
+  const resetButton = adForm.querySelector(`.ad-form__reset`);
+  const titleInput = adForm.querySelector(`#title`);
+  const type = adForm.querySelector(`#type`);
+  const price = adForm.querySelector(`#price`);
+  const timein = adForm.querySelector(`#timein`);
+  const timeout = adForm.querySelector(`#timeout`);
+
+  const onFormSubmit = (evt) => {
+    evt.preventDefault();
+    window.backend.send(new FormData(adForm), window.utils.openSuccessMessage, window.utils.openErrorOnUpload);
+  };
+  const onResetButtonClick = () => window.main.deactivatePage();
+  const onRoomChange = (evt) => changeRoomNumberValue(evt.target.value);
   const getAddresValue = (gapX, gapY) => {
     address.value = (parseInt(mainPin.style.left, 10) + gapX) + `, ` + (parseInt(mainPin.style.top, 10) + gapY);
   };
@@ -43,7 +49,7 @@
     });
     guest.value = value > 3 ? 0 : value;
   };
-  const checkTitleLength = () => {
+  const onTitleInput = () => {
     const valueLength = titleInput.value.length;
     if (valueLength < MIN_TITLE_LENGTH) {
       titleInput.setCustomValidity(`Еще ` + (MIN_TITLE_LENGTH - valueLength) + ` симв.`);
@@ -54,7 +60,7 @@
     }
     titleInput.reportValidity();
   };
-  const checkPrice = () => {
+  const onPriceChange = () => {
     price.placeholder = MIN_PRICE[type.value];
     if (parseInt(price.value, 10) < parseInt(price.placeholder, 10)) {
       price.setCustomValidity(`Минимальная цена для данного типа жилья: ` + price.placeholder);
@@ -69,6 +75,12 @@
     adForm.reset();
     changeRoomNumberValue(room.value);
     getAddresValue(GAP, GAP);
+    type.removeEventListener(`change`, onPriceChange);
+    price.removeEventListener(`input`, onPriceChange);
+    titleInput.removeEventListener(`input`, onTitleInput);
+    room.removeEventListener(`change`, onRoomChange);
+    adForm.removeEventListener(`submit`, onFormSubmit);
+    resetButton.addEventListener(`click`, onResetButtonClick);
   };
   const activateForm = () => {
     getAddresValue(GAP, GAP_WITH_ARROW);
@@ -76,26 +88,18 @@
     adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.removeAttribute(`disabled`, `true`));
     changeRoomNumberValue(room.value);
     // удалять или нет обработчики при деактивации страницы ?
-    type.addEventListener(`change`, checkPrice);
-    price.addEventListener(`input`, checkPrice);
-    titleInput.addEventListener(`input`, checkTitleLength);
-    room.addEventListener(`change`, (evt) => {
-      changeRoomNumberValue(evt.target.value);
-    });
+    type.addEventListener(`change`, onPriceChange);
+    price.addEventListener(`input`, onPriceChange);
+    titleInput.addEventListener(`input`, onTitleInput);
+    room.addEventListener(`change`, onRoomChange);
     timein.addEventListener(`change`, () => {
       timeout.value = timein.value;
     });
     timeout.addEventListener(`change`, () => {
       timein.value = timeout.value;
     });
-    adForm.addEventListener(`submit`, (evt) => {
-      evt.preventDefault();
-      window.upload.send(new FormData(adForm), window.utils.openSuccessMessage, window.utils.openErrorOnUpload);
-    });
-    resetButton.addEventListener(`click`, () => {
-      window.main.deactivatePage();
-      filter.reset();
-    });
+    adForm.addEventListener(`submit`, onFormSubmit);
+    resetButton.addEventListener(`click`, onResetButtonClick);
   };
   window.form = {
     deactivateForm,

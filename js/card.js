@@ -4,11 +4,12 @@
     palace: `Дворец`,
     flat: `Квартира`,
     house: `Дом`,
-    bungalow: `Дворец`
+    bungalow: `Бунгало`
   };
-  const cardsContainer = document.querySelector(`.map`);
+  const cardsContainer = window.map.map;
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
-  const createCard = (mock) => {
+
+  const createCardTemplate = (mock) => {
     const newCard = cardTemplate.cloneNode(true);
     newCard.querySelector(`.popup__avatar`).src = mock.author.avatar;
     newCard.querySelector(`.popup__title`).textContent = mock.offer.title;
@@ -26,21 +27,27 @@
     const imgPhoto = photoContainer.querySelector(`img`);
     const photos = mock.offer.photos;
     photoContainer.innerHTML = ``;
-    for (let i = 0; i < photos.length; i++) {
-      const newImg = imgPhoto.cloneNode(true);
-      newImg.src = photos[i];
-      photoContainer.appendChild(newImg);
+    if (photos.length) {
+      for (let i = 0; i < photos.length; i++) {
+        const newImg = imgPhoto.cloneNode(true);
+        newImg.src = photos[i];
+        photoContainer.appendChild(newImg);
+      }
+    } else {
+      photoContainer.remove();
     }
     return newCard;
   };
-  const renderCard = (indexOfCard) => {
-    const card = createCard(window.data[indexOfCard]);
+
+  const renderCard = (index) => {
+    const card = createCardTemplate(window.filteredPins[index]);
     cardsContainer.insertBefore(card, cardsContainer.lastElementChild);
     const closePopupButton = card.querySelector(`.popup__close`);
     closePopupButton.addEventListener(`click`, () => {
-      window.map.closePopup();
+      window.map.closePopupCard();
     });
   };
+
   window.card = {
     renderCard
   };
