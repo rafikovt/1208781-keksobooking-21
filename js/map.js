@@ -25,6 +25,7 @@
   };
   const deactivateMap = () => {
     map.classList.add(`map--faded`);
+    window.filter.deactivateFilters();
     window.filter.mapFilters.reset();
     window.filter.mapFilters.classList.add(`map__filters--disabled`);
     [...window.filter.mapFilters.children].forEach((elem) => elem.setAttribute(`disabled`, `true`));
@@ -37,7 +38,14 @@
   };
   const activateMap = () => {
     map.classList.remove(`map--faded`);
-    window.filter.updatePins(window.data);
+    // сделал загрузку при активации карты, иначе иногда не успевают подгружаться обьявления
+    const successLoad = (data) => {
+      window.data = data;
+      window.pin.renderPins(data);
+    };
+    window.backend.load(successLoad, window.utils.openErrorOnLoad);
+    // window.pin.renderPins(window.data);
+    window.filter.activateFilters();
   };
   window.map = {
     openPopupCard,
