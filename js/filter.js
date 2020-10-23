@@ -19,14 +19,7 @@ const pinsFeaturesFilter = (pin) => {
   }
 };
 
-const pinsTypeFilter = (pin) => {
-  switch (houseTypeFilter.selectedIndex) {
-    case 0:
-      return pin;
-    default:
-      return pin.offer.type === houseTypeFilter.value;
-  }
-};
+const pinsTypeFilter = (pin) => !houseTypeFilter.selectedIndex ? pin : pin.offer.type === houseTypeFilter.value;
 const pinsPriceFilter = (pin) => {
   switch (housePriceFilter.selectedIndex) {
     case 1:
@@ -39,22 +32,9 @@ const pinsPriceFilter = (pin) => {
       return pin;
   }
 };
-const pinsRoomsFilter = (pin) => {
-  switch (houseRoomsfilter.selectedIndex) {
-    case 0:
-      return pin;
-    default:
-      return pin.offer.rooms === Number(houseRoomsfilter.value);
-  }
-};
-const pinsGuestsFilter = (pin) => {
-  switch (houseGuestsFilter.selectedIndex) {
-    case 0:
-      return pin;
-    default:
-      return pin.offer.guests === Number(houseGuestsFilter.value);
-  }
-};
+const pinsRoomsFilter = (pin) => !houseRoomsfilter.selectedIndex ? pin : pin.offer.rooms === Number(houseRoomsfilter.value);
+
+const pinsGuestsFilter = (pin) => !houseGuestsFilter.selectedIndex ? pin : pin.offer.guests === Number(houseGuestsFilter.value);
 
 const filterFuntcions = [pinsTypeFilter, pinsPriceFilter, pinsRoomsFilter, pinsGuestsFilter, pinsFeaturesFilter];
 const getFilteredData = () => (filterFuntcions.reduce((acc, cur) => acc.filter(cur), window.data));

@@ -69,6 +69,8 @@ const onPriceChange = () => {
   price.reportValidity();
 };
 const deactivateForm = () => {
+  window.preview.avatarPreview.src = `img/muffin-grey.svg`;
+  window.preview.adphotoPreview.src = ``;
   adForm.classList.add(`ad-form--disabled`);
   adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.setAttribute(`disabled`, `true`));
   adForm.reset();
