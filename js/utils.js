@@ -12,11 +12,8 @@ const onPopupEscPress = (evt) => {
   }
 };
 const onClickClosePopup = () => {
-  if (main.contains(successPopup)) {
-    successPopup.remove();
-  } else {
-    errorPopup.remove();
-  }
+  const popup = main.contains(successPopup) ? successPopup : errorPopup;
+  popup.remove();
   document.removeEventListener(`click`, onClickClosePopup);
   document.removeEventListener(`keydown`, onPopupEscPress);
 };
