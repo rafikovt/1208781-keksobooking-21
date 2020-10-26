@@ -5,24 +5,24 @@ const adphotoFileChooser = document.querySelector(`.ad-form__upload input[type=f
 const photoPreviewContainer = document.querySelector(`.ad-form__photo`);
 const adphotoPreview = document.createElement(`img`);
 
-avatarFileChooser.addEventListener(`change`, () => {
+const createPreview = (fileChooser, preview) => {
   const reader = new FileReader();
-  const file = avatarFileChooser.files[0];
+  const file = fileChooser.files[0];
   reader.addEventListener(`load`, () => {
-    avatarPreview.src = reader.result;
+    preview.src = reader.result;
   });
   reader.readAsDataURL(file);
-});
-
+};
+const onAvatarChange = () => {
+  createPreview(avatarFileChooser, avatarPreview);
+};
+const onadPhotoChange = () => {
+  createPreview(adphotoFileChooser, adphotoPreview);
+};
+avatarFileChooser.addEventListener(`change`, onAvatarChange);
 photoPreviewContainer.appendChild(adphotoPreview);
-adphotoFileChooser.addEventListener(`change`, () => {
-  const reader = new FileReader();
-  const file = adphotoFileChooser.files[0];
-  reader.addEventListener(`load`, () => {
-    adphotoPreview.src = reader.result;
-  });
-  reader.readAsDataURL(file);
-});
+adphotoFileChooser.addEventListener(`change`, onadPhotoChange);
+
 window.preview = {
   avatarPreview,
   adphotoPreview
