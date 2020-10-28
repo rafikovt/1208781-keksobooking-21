@@ -7,7 +7,7 @@ const MIN_COORD_Y = 46;
 const mainPin = document.querySelector(`.map__pin--main`);
 const START_COORD_MAIN_PIN = {
   x: mainPin.style.top,
-  y: mainPin.style.left
+  y: mainPin.style.left,
 };
 const setMainPinStartCoords = () => {
   mainPin.style.top = START_COORD_MAIN_PIN.x;
@@ -52,6 +52,6 @@ const dragNDropMainPin = (evt) => {
 window.movepin = {
   dragNDropMainPin,
   setMainPinStartCoords,
-  mainPin
+  mainPin,
 };
 

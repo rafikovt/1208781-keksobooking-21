@@ -3,15 +3,17 @@ const SHIFT_WIDTH = 25;
 const SHIFT_HEIGHT = 70;
 const MAX_PINS = 5;
 
-const pinsContainer = window.map.map.querySelector(`.map__pins`);
+const pinsContainer = document.querySelector(`.map__pins`);
 const newPinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-
+const mapFilter = document.querySelector(`.map__filters`);
 const setDeactivePins = () => {
   const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
   pins.forEach((elem) => elem.classList.remove(`map__pin--active`));
 };
 
-const setActivePin = (pin) => (pin.classList.add(`map__pin--active`));
+const setActivePin = (pin) => {
+  pin.classList.add(`map__pin--active`);
+};
 
 const createPin = (moks) => {
   const newPin = newPinTemplate.cloneNode(true);
@@ -30,8 +32,8 @@ const renderPins = (moks) => {
     }
   }
   pinsContainer.appendChild(fragment);
-  window.filter.mapFilters.classList.remove(`map__filters--disabled`);
-  [...window.filter.mapFilters.children].forEach((elem) => elem.removeAttribute(`disabled`, `true`));
+  mapFilter.classList.remove(`map__filters--disabled`);
+  [...mapFilter.children].forEach((elem) => elem.removeAttribute(`disabled`, `true`));
   const pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
   pins.forEach((elem, index) => elem.addEventListener(`click`, () => {
     setDeactivePins();
@@ -48,8 +50,8 @@ const removePins = () => {
 };
 
 window.pin = {
-  renderPins,
-  removePins,
-  setDeactivePins,
+  render: renderPins,
+  remove: removePins,
+  deactive: setDeactivePins,
 };
 

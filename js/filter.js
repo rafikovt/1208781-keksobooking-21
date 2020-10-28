@@ -1,17 +1,19 @@
 'use strict';
 const PRICE_VALUE = {
   min: 10000,
-  max: 50000
+  max: 50000,
 };
-const mapFilters = document.querySelector(`.map__filters`);
-const houseTypeFilter = mapFilters.querySelector(`#housing-type`);
-const housePriceFilter = mapFilters.querySelector(`#housing-price`);
-const houseRoomsfilter = mapFilters.querySelector(`#housing-rooms`);
-const houseGuestsFilter = mapFilters.querySelector(`#housing-guests`);
-const houseFeaturesFilters = mapFilters.querySelectorAll(`.map__checkbox`);
+const mapFilter = document.querySelector(`.map__filters`);
+const houseTypeFilter = mapFilter.querySelector(`#housing-type`);
+const housePriceFilter = mapFilter.querySelector(`#housing-price`);
+const houseRoomsfilter = mapFilter.querySelector(`#housing-rooms`);
+const houseGuestsFilter = mapFilter.querySelector(`#housing-guests`);
+const houseFeaturesFilters = mapFilter.querySelectorAll(`.map__checkbox`);
 
-const getValueOfCheckedFeatures = () => ([...mapFilters.querySelectorAll(`.map__checkbox:checked`)].map((cb) => cb.value));
-const pinsFeaturesFilter = (pin) => {
+const getValueOfCheckedFeatures = () => {
+  return [...mapFilter.querySelectorAll(`.map__checkbox:checked`)].map((elem) => elem.value);
+};
+const getFilteredFeatures = (pin) => {
   if (getValueOfCheckedFeatures().length) {
     return getValueOfCheckedFeatures().every((elem) => pin.offer.features.includes(elem));
   } else {
@@ -19,8 +21,10 @@ const pinsFeaturesFilter = (pin) => {
   }
 };
 
-const pinsTypeFilter = (pin) => !houseTypeFilter.selectedIndex ? pin : pin.offer.type === houseTypeFilter.value;
-const pinsPriceFilter = (pin) => {
+const getFilteredType = (pin) => {
+  return !houseTypeFilter.selectedIndex ? pin : pin.offer.type === houseTypeFilter.value;
+};
+const getFilteredPrice = (pin) => {
   switch (housePriceFilter.selectedIndex) {
     case 1:
       return (pin.offer.price < PRICE_VALUE.max) && (pin.offer.price > PRICE_VALUE.min);
@@ -32,16 +36,22 @@ const pinsPriceFilter = (pin) => {
       return pin;
   }
 };
-const pinsRoomsFilter = (pin) => !houseRoomsfilter.selectedIndex ? pin : pin.offer.rooms === Number(houseRoomsfilter.value);
+const getFilteredRooms = (pin) => {
+  return !houseRoomsfilter.selectedIndex ? pin : pin.offer.rooms === Number(houseRoomsfilter.value);
+};
 
-const pinsGuestsFilter = (pin) => !houseGuestsFilter.selectedIndex ? pin : pin.offer.guests === Number(houseGuestsFilter.value);
+const getFilteredGuests = (pin) => {
+  return !houseGuestsFilter.selectedIndex ? pin : pin.offer.guests === Number(houseGuestsFilter.value);
+};
 
-const filterFuntcions = [pinsTypeFilter, pinsPriceFilter, pinsRoomsFilter, pinsGuestsFilter, pinsFeaturesFilter];
-const getFilteredData = () => (filterFuntcions.reduce((acc, cur) => acc.filter(cur), window.data));
+const filterFuntcions = [getFilteredType, getFilteredPrice, getFilteredRooms, getFilteredGuests, getFilteredFeatures];
+const getFilteredData = () => {
+  return filterFuntcions.reduce((acc, cur) => acc.filter(cur), window.data);
+};
 const onFiltersChange = window.debounce(() => {
-  window.pin.removePins();
+  window.pin.remove();
   window.map.closePopupCard();
-  window.pin.renderPins(getFilteredData());
+  window.pin.render(getFilteredData());
 });
 const activateFilters = () => {
   houseTypeFilter.addEventListener(`change`, onFiltersChange);
@@ -58,9 +68,8 @@ const deactivateFilters = () => {
   houseFeaturesFilters.forEach((elem) => elem.removeEventListener(`change`, onFiltersChange));
 };
 window.filter = {
-  mapFilters,
-  getFilteredData,
-  activateFilters,
-  deactivateFilters
+  data: getFilteredData,
+  activate: activateFilters,
+  deactivate: deactivateFilters,
 };
 

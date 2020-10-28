@@ -5,7 +5,7 @@ const TYPES = {
   house: `Дом`,
   bungalow: `Бунгало`
 };
-const cardsContainer = window.map.map;
+const cardsContainer = document.querySelector(`.map`);
 const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
 const createCardTemplate = (mock) => {
@@ -51,13 +51,13 @@ const createCardTemplate = (mock) => {
 };
 
 const renderCard = (index) => {
-  const card = createCardTemplate(window.filter.getFilteredData()[index]);
+  const card = createCardTemplate(window.filter.data()[index]);
   cardsContainer.insertBefore(card, cardsContainer.lastElementChild);
   const closePopupButton = card.querySelector(`.popup__close`);
   closePopupButton.addEventListener(`click`, window.map.closePopupCard);
 };
 
 window.card = {
-  renderCard
+  render: renderCard,
 };
 

@@ -3,7 +3,7 @@ const MIN_PRICE = {
   palace: 10000,
   flat: 1000,
   house: 5000,
-  bungalow: 0
+  bungalow: 0,
 };
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -32,8 +32,12 @@ const onFormSubmit = (evt) => {
   evt.preventDefault();
   window.backend.send(new FormData(adForm), window.utils.openSuccessMessage, window.utils.openErrorOnUpload);
 };
-const onResetButtonClick = () => window.main.deactivatePage();
-const onRoomChange = (evt) => changeRoomNumberValue(evt.target.value);
+const onResetButtonClick = () => {
+  window.main.deactivatePage();
+};
+const onRoomChange = (evt) => {
+  changeRoomNumberValue(evt.target.value);
+};
 const getAddresValue = (gapX, gapY) => {
   address.value = (parseInt(mainPin.style.left, 10) + gapX) + `, ` + (parseInt(mainPin.style.top, 10) + gapY);
 };
@@ -69,8 +73,8 @@ const onPriceChange = () => {
   price.reportValidity();
 };
 const deactivateForm = () => {
-  window.preview.avatarPreview.src = `img/muffin-grey.svg`;
-  window.preview.adphotoPreview.src = ``;
+  window.preview.avatar.src = `img/muffin-grey.svg`;
+  window.preview.adphoto.src = ``;
   adForm.classList.add(`ad-form--disabled`);
   adForm.querySelectorAll(`fieldset`).forEach((elem) => elem.setAttribute(`disabled`, `true`));
   adForm.reset();
@@ -102,8 +106,8 @@ const activateForm = () => {
   resetButton.addEventListener(`click`, onResetButtonClick);
 };
 window.form = {
-  deactivateForm,
-  activateForm,
-  setActivatedPinAddress
+  deactivate: deactivateForm,
+  activate: activateForm,
+  setActivatedPinAddress,
 };
 

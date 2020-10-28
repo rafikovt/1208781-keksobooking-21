@@ -4,17 +4,17 @@ const POST_URL = `https://21.javascript.pages.academy/keksobooking`;
 const GET_URL = `https://21.javascript.pages.academy/keksobooking/data`;
 const RequestMethod = {
   POST: `POST`,
-  GET: `GET`
+  GET: `GET`,
 };
-const statusCode = {
-  OK: 200
+const StatusCode = {
+  OK: 200,
 };
 const xhrSend = new XMLHttpRequest();
 const xhrLoad = new XMLHttpRequest();
 const xhrOnLoad = (onSuccess, onError, xhr) => {
   xhr.responseType = `json`;
   xhr.addEventListener(`load`, () => {
-    if (xhr.status === statusCode.OK) {
+    if (xhr.status === StatusCode.OK) {
       onSuccess(xhr.response);
     } else {
       onError(`Статус ответа: ${xhr.status} ${xhr.statusText}`);
@@ -40,6 +40,6 @@ const load = (onSuccess, onError) => {
 };
 window.backend = {
   send,
-  load
+  load,
 };
 

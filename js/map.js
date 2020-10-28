@@ -1,5 +1,6 @@
 'use strict';
 const map = document.querySelector(`.map`);
+const mapFilter = map.querySelector(`.map__filters`);
 const onPopupEscPress = (evt) => {
   if (evt.key === `Escape`) {
     evt.preventDefault();
@@ -14,21 +15,21 @@ const removePopupCard = () => {
 };
 const openPopupCard = (index) => {
   removePopupCard();
-  window.card.renderCard(index);
+  window.card.render(index);
   document.addEventListener(`keydown`, onPopupEscPress);
 };
 const closePopupCard = () => {
   removePopupCard();
-  window.pin.setDeactivePins();
+  window.pin.deactive();
   document.removeEventListener(`keydown`, onPopupEscPress);
 };
 const deactivateMap = () => {
   map.classList.add(`map--faded`);
-  window.filter.deactivateFilters();
-  window.filter.mapFilters.reset();
-  window.filter.mapFilters.classList.add(`map__filters--disabled`);
-  [...window.filter.mapFilters.children].forEach((elem) => elem.setAttribute(`disabled`, `true`));
-  window.pin.removePins();
+  window.filter.deactivate();
+  mapFilter.reset();
+  mapFilter.classList.add(`map__filters--disabled`);
+  [...mapFilter.children].forEach((elem) => elem.setAttribute(`disabled`, `true`));
+  window.pin.remove();
   window.movepin.setMainPinStartCoords();
   const cardPopup = document.querySelector(`.popup`);
   if (cardPopup) {
@@ -37,14 +38,13 @@ const deactivateMap = () => {
 };
 const activateMap = () => {
   map.classList.remove(`map--faded`);
-  window.pin.renderPins(window.data);
-  window.filter.activateFilters();
+  window.pin.render(window.data);
+  window.filter.activate();
 };
 window.map = {
   openPopupCard,
   closePopupCard,
-  deactivateMap,
-  activateMap,
-  map
+  deactivate: deactivateMap,
+  activate: activateMap,
 };
 

@@ -43,6 +43,6 @@ window.utils = {
   openErrorOnLoad,
   openSuccessMessage,
   openErrorOnUpload,
-  onPopupEscPress
+  onPopupEscPress,
 };
 

@@ -2,13 +2,13 @@
 const mainPin = document.querySelector(`.map__pin--main`);
 const map = document.querySelector(`.map`);
 const deactivatePage = () => {
-  window.map.deactivateMap();
-  window.form.deactivateForm();
+  window.map.deactivate();
+  window.form.deactivate();
 };
 deactivatePage();
 const activatePage = () => {
-  window.map.activateMap();
-  window.form.activateForm();
+  window.map.activate();
+  window.form.activate();
 };
 mainPin.addEventListener(`keydown`, (evt) => {
   if (evt.key === `Enter` && map.classList.contains(`map--faded`)) {
@@ -24,7 +24,7 @@ mainPin.addEventListener(`mousedown`, (evt) => {
 });
 window.main = {
   deactivatePage,
-  activatePage
+  activatePage,
 };
 
 
