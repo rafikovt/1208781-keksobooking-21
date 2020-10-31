@@ -27,9 +27,7 @@ const createPin = (moks) => {
 const renderPins = (moks) => {
   const fragment = document.createDocumentFragment();
   for (let i = 0; (i < moks.length && i < MAX_PINS); i++) {
-    if (moks[i].offer) {
-      fragment.appendChild(createPin(moks[i]));
-    }
+    fragment.appendChild(createPin(moks[i]));
   }
   pinsContainer.appendChild(fragment);
   mapFilter.classList.remove(`map__filters--disabled`);
