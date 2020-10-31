@@ -4,6 +4,9 @@ const avatar = document.querySelector(`.ad-form-header__preview img`);
 const adphotoFileChooser = document.querySelector(`.ad-form__upload input[type=file]`);
 const photoPreviewContainer = document.querySelector(`.ad-form__photo`);
 const adphoto = document.createElement(`img`);
+adphoto.style.maxWidth = `100%`;
+adphoto.style.height = `auto`;
+
 
 const createPreview = (fileChooser, preview) => {
   const reader = new FileReader();
