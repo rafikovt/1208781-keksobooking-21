@@ -80,6 +80,7 @@ const deactivateForm = () => {
   adForm.reset();
   changeRoomNumberValue(room.value);
   getAddresValue(GAP, GAP);
+  price.placeholder = MIN_PRICE[type.options[type.selectedIndex].value];
   type.removeEventListener(`change`, onPriceChange);
   price.removeEventListener(`input`, onPriceChange);
   titleInput.removeEventListener(`input`, onTitleInput);

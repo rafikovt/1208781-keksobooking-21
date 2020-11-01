@@ -3,6 +3,11 @@ const PRICE_VALUE = {
   min: 10000,
   max: 50000,
 };
+const INDEX_OF_VALUE = {
+  middle: 1,
+  low: 2,
+  high: 3,
+};
 const mapFilter = document.querySelector(`.map__filters`);
 const houseTypeFilter = mapFilter.querySelector(`#housing-type`);
 const housePriceFilter = mapFilter.querySelector(`#housing-price`);
@@ -26,11 +31,11 @@ const getFilteredType = (pin) => {
 };
 const getFilteredPrice = (pin) => {
   switch (housePriceFilter.selectedIndex) {
-    case 1:
+    case INDEX_OF_VALUE.middle:
       return (pin.offer.price < PRICE_VALUE.max) && (pin.offer.price > PRICE_VALUE.min);
-    case 2:
+    case INDEX_OF_VALUE.low:
       return pin.offer.price < PRICE_VALUE.min;
-    case 3:
+    case INDEX_OF_VALUE.high:
       return pin.offer.price > PRICE_VALUE.max;
     default:
       return pin;
