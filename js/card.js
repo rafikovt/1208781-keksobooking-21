@@ -27,7 +27,7 @@ const createCardTemplate = (cardData) => {
   addressElement.textContent = address ? address : addressElement.remove();
   priceElement.textContent = price ? `${price}₽/ночь` : priceElement.remove();
   typeElement.textContent = type ? TYPES[type] : typeElement.remove();
-  capacity.textContent = (rooms && guests) !== undefined ? `${rooms} комнаты для ${guests} гостей` : capacity.remove();
+  capacity.textContent = (rooms && guests) ? `${rooms} комнаты для ${guests} гостей` : capacity.remove();
   time.textContent = (checkin && checkout) ? `Заезд после ${checkin}, выезд до ${checkout}` : time.remove();
   if (cardData.offer.features.length) {
     const notAvailableFeatures = [...popupFeatures].filter((elem) => !features.some((str) => elem.className.includes(`--${str}`)));
